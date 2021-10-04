@@ -1,2 +1,4 @@
 , version, URL, RPS, Response Time, Comment
 1, 0001, /one,rps 140,response time 0.00082, One linear request in loop
+2, 0002, /one,rps 190,response time 0.00120, One async request in loop and fast response
+2, 0002, /four,rps 2,response time 410 ms, One linear request in loop and long answer

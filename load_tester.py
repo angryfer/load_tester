@@ -1,5 +1,7 @@
 import requests
 import threading
+from request_generator import RequestGenerator
+import asyncio
 
 
 class LoadTester():
@@ -10,12 +12,15 @@ class LoadTester():
         self.time = 30
         self.rps = 10
         self.url = 'http://127.0.0.1:5000/four'
+        self.type = 'async'
 
-    def start(self):
-        while True:
-            response = requests.get(self.url)
+    async def start(self):
+        generator = RequestGenerator(self.url, self.type)
+        a = await generator.generate()
 
 
 if __name__ == '__main__':
     load = LoadTester()
-    load.start()
+
+    asyncio.run(load.start())
+    
