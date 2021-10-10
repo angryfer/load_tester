@@ -16,11 +16,13 @@ class LoadTester():
 
     async def start(self):
         generator = RequestGenerator(self.url, self.type)
-        a = await generator.generate()
+        await generator.generate()
 
 
 if __name__ == '__main__':
     load = LoadTester()
 
     asyncio.run(load.start())
-    
+    # loop = asyncio.new_event_loop()
+    # asyncio.set_event_loop(load.start())
+
