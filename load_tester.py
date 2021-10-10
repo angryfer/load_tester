@@ -11,7 +11,7 @@ class LoadTester():
         self.workers = 1
         self.time = 30
         self.rps = 10
-        self.url = 'http://127.0.0.1:5000/four'
+        self.url = 'http://127.0.0.1:5000/one'
         self.type = 'async'
 
     async def start(self):
