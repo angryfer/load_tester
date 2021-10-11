@@ -3,3 +3,5 @@
 2, 0002, /one,rps 190,response time 0.00120, One async request in loop and fast response
 3, 0002, /four,rps 2,response time 410 ms, One linear request in loop and long answer
 4, 0002, /one,rps 240,response time 0.00120 ms, One async request in loop and fast response
+5, 0003, /one,rps 370,response time 0.00120 ms, Many threading requests
+6, 0003, /one,rps 40,response time 0.00120 ms, Bash script with curl

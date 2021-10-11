@@ -5,6 +5,7 @@ import asyncio
 from contextlib import suppress
 import nest_asyncio
 from ratelimit import limits, sleep_and_retry
+from monitoring import Monitor
 
 
 nest_asyncio.apply()
@@ -17,6 +18,7 @@ class RequestGenerator():
         self.rate_limit = 100
         self.threads = 1
         self.generate_type = generate_type
+        self.monitoring = Monitor()
 
     async def generate(self):
         if self.generate_type == 'linear':
@@ -34,9 +36,12 @@ class RequestGenerator():
         asyncio.ensure_future(self.make_async_thread(loop))
         loop.run_until_complete(self.make_async_thread(loop))
 
-    def make_linear_thread(self):
-        while True:
-            requests.get(self.target_url)
+    def make_linear_thread(self, session):
+
+        self.monitoring.requests_current += 1
+        self.monitoring.requests_all += 1
+        session.get(self.target_url, headers={'Connection': 'close'})
+        self.monitoring.requests_current -= 1
 
     # @sleep_and_retry
     # @limits(calls=rate_limit, period=1)
@@ -54,6 +59,7 @@ class RequestGenerator():
             my_thread.start()
 
     def make_thread(self):
+        session = requests.Session()
         while True:
-            thread = threading.Thread(target=self.make_linear_thread, daemon=True)
+            thread = threading.Thread(target=self.make_linear_thread, args=(session,), daemon=True)
             thread.start()
